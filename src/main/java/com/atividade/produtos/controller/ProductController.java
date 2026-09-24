@@ -1,5 +1,6 @@
 package com.atividade.produtos.controller;
 
+import com.atividade.produtos.dto.AvailabilityResponse;
 import com.atividade.produtos.dto.ProductRequest;
 import com.atividade.produtos.dto.ProductResponse;
 import com.atividade.produtos.service.ProductService;
@@ -61,5 +62,11 @@ public class ProductController {
     public ResponseEntity<Void> inactivate(@PathVariable("id") String id) {
         service.inactivate(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/availability")
+    public AvailabilityResponse checkAvailability(@PathVariable("id") String id,
+                                                  @RequestParam("cep") String cep) {
+        return service.checkAvailability(id, cep);
     }
 }

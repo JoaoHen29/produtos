@@ -1,5 +1,6 @@
 package com.atividade.produtos.service;
 
+import com.atividade.produtos.dto.AvailabilityResponse;
 import com.atividade.produtos.dto.ProductRequest;
 import com.atividade.produtos.dto.ProductResponse;
 import com.atividade.produtos.exception.ProductNotFoundException;
@@ -8,15 +9,19 @@ import com.atividade.produtos.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ProductService {
 
     private final ProductRepository repository;
+    private final ViaCepService viaCepService;
 
-    public ProductService(ProductRepository repository) {
+    public ProductService(ProductRepository repository, ViaCepService viaCepService) {
         this.repository = repository;
+        this.viaCepService = viaCepService;
     }
 
     @Transactional
@@ -61,6 +66,26 @@ public class ProductService {
     public void inactivate(String id) {
         Product product = getProductOrThrow(id);
         product.setActive(false);
+    }
+
+    public AvailabilityResponse checkAvailability(String productId, String cep) {
+        Product product = getProductOrThrow(productId);
+        String city = viaCepService.findCityByCep(cep);
+        boolean available = isSameCity(city, product.getDistributionCenter());
+        return new AvailabilityResponse(product.getId(), cep, city, product.getDistributionCenter(), available);
+    }
+
+    boolean isSameCity(String city, String distributionCenter) {
+        if (city == null || distributionCenter == null) {
+            return false;
+        }
+        return normalize(city).equals(normalize(distributionCenter));
+    }
+
+    private String normalize(String text) {
+        String withoutAccents = Normalizer.normalize(text.trim(), Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        return withoutAccents.toLowerCase(Locale.ROOT);
     }
 
     private Product getProductOrThrow(String id) {
