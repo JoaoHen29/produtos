@@ -34,6 +34,9 @@ public class Product {
     @Column(nullable = false)
     private boolean active = true;
 
+    @Column(name = "distribution_center", nullable = false, length = 50)
+    private String distributionCenter;
+
     @Column(name = "created_by", length = 50, updatable = false)
     private String createdBy;
 
@@ -95,6 +98,14 @@ public class Product {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getDistributionCenter() {
+        return distributionCenter;
+    }
+
+    public void setDistributionCenter(String distributionCenter) {
+        this.distributionCenter = distributionCenter;
     }
 
     public String getCreatedBy() {

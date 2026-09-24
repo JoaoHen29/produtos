@@ -10,7 +10,8 @@ public record ProductResponse(
         String description,
         String category,
         BigDecimal price,
-        boolean active
+        boolean active,
+        String distributionCenter
 ) {
 
     public static ProductResponse from(Product product) {
@@ -20,7 +21,8 @@ public record ProductResponse(
                 product.getDescription(),
                 product.getCategory(),
                 product.getPrice(),
-                product.isActive()
+                product.isActive(),
+                product.getDistributionCenter()
         );
     }
 }

@@ -72,5 +72,6 @@ public class ProductService {
         product.setDescription(request.description());
         product.setCategory(request.category());
         product.setPrice(request.price());
+        product.setDistributionCenter(request.distributionCenter());
     }
 }
