@@ -55,6 +55,21 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.METHOD_NOT_ALLOWED, ex.getMessage(), List.of());
     }
 
+    @ExceptionHandler(InvalidCepException.class)
+    public ResponseEntity<ApiError> handleInvalidCep(InvalidCepException ex) {
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(CepNotFoundException.class)
+    public ResponseEntity<ApiError> handleCepNotFound(CepNotFoundException ex) {
+        return build(HttpStatus.NOT_FOUND, ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(ViaCepUnavailableException.class)
+    public ResponseEntity<ApiError> handleViaCepUnavailable(ViaCepUnavailableException ex) {
+        return build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage(), List.of());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleUnexpected(Exception ex) {
         log.error("Erro inesperado", ex);
