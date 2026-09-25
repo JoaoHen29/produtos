@@ -84,7 +84,7 @@ Depois chame `GET /products/p1/availability?cep=08773380`. A resposta esperada �
 }
 ```
 
-[Teste com a ViaCEP indisponível](docs/teste-viacep-indisponivel.png)
+![Teste com a ViaCEP indisponível](docs/teste-viacep-indisponivel.png)
 
 Enquanto isso, `GET /products` continua respondendo 200, o que mostra que a falha externa fica isolada.
 
